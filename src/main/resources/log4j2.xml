@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" strict="true">
+    <Properties>
+        <Property name="LOG_BASE_DIR">/data/springboot-temp/logs</Property>
+        <Property name="CONSOLE_LOG_PATTERN">%clr{%d{yyyy-MM-dd HH:mm:ss.SSS}}{faint} %clr{-%5p} %clr{-}{faint}
+            %clr{${sys:PID}}{magenta} %clr{-}{faint} %clr{[%-1t-%T]}{faint} %clr{%c}{cyan} %clr{:}{faint} %m%n%xwEx
+        </Property>
+        <Property name="FILE_LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} -%5p - %pid - [%-1t-%T] %c : %m%n%xwEx</Property>
+    </Properties>
+
+    <Appenders>
+        <!-- 输出到控制台 -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <!-- 需要记录的格式 -->
+            <PatternLayout pattern="${sys:CONSOLE_LOG_PATTERN}"/>
+        </Console>
+
+        <!-- 控制台日志文件-->
+        <RollingRandomAccessFile name="stdout" fileName="${LOG_BASE_DIR}/stdout.log"
+                                 filePattern="${LOG_BASE_DIR}/stdout.%d{yyyy-MM-dd}.log.gz">
+            <!-- 需要记录的格式 -->
+            <PatternLayout pattern="${sys:FILE_LOG_PATTERN}"/>
+            <Policies>
+                <!-- 每小时生成一个日志文件 -->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <!-- 每100MB生成一个日志文件 -->
+                <SizeBasedTriggeringPolicy size="100MB"/>
+            </Policies>
+            <!-- 最大保留文件数量为100 -->
+            <DefaultRolloverStrategy max="100"/>
+        </RollingRandomAccessFile>
+    </Appenders>
+
+    <Loggers>
+        <!-- 控制台和日志文件中打印 Mybatis Sql, 日志等级高于 DEBUG 时不打印 Sql 日志-->
+        <!-- level="DEBUG" 打印 Sql 影响条数-->
+        <!-- level="TRACE" 打印 Sql 查询结果 -->
+        <AsyncLogger name="com.temp.mapper" level="DEBUG" additivity="false">
+            <!-- 输出日志到控制台 -->
+            <AppenderRef ref="Console"/>
+            <!-- 输出日志到日志文件 -->
+            <AppenderRef ref="stdout"/>
+        </AsyncLogger>
+
+        <AsyncLogger name="org.springframework" level="ERROR" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="stdout"/>
+        </AsyncLogger>
+
+        <!-- 全局配置 -->
+        <asyncRoot level="INFO" includeLocation="true">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="stdout"/>
+        </asyncRoot>
+    </Loggers>
+
+</Configuration>
