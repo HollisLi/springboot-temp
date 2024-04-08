@@ -39,11 +39,11 @@ public class AliOssUtil {
     private String key;
     @Value("${ali-oss.secret:}")
     private String secret;
-    @Value("${ali-oss.endpoint:https://oss-cn-hangzhou.aliyuncs.com}")
+    @Value("${ali-oss.endpoint:}")
     private String endpoint;
-    @Value("${ali-oss.bucket:note-bucket-0}")
+    @Value("${ali-oss.bucket:}")
     private String bucket;
-    @Value("${ali-oss.basePath:note}")
+    @Value("${ali-oss.basePath:}")
     private String basePath;
 
 
