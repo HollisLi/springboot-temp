@@ -2,3 +2,7 @@ task:
   cron:
     # 每分钟执行一次
     temp: 0 * * * * ?
+
+## 指定日志配置文件
+logging:
+  config: classpath:log4j2-local.xml

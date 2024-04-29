@@ -26,10 +26,10 @@
             </Policies>
             <!-- 每天最多生成的日志文件数 -->
             <DefaultRolloverStrategy max="100">
-                <!-- 删除 30 天前的日志文件 -->
-                <!--<Delete basePath="${LOG_BASE_DIR}">-->
-                <!--    <IfLastModified age="30d"/>-->
-                <!--</Delete>-->
+                <!-- 日志文件保留3天 -->
+                <Delete basePath="${LOG_BASE_DIR}">
+                    <IfLastModified age="3d"/>
+                </Delete>
             </DefaultRolloverStrategy>
         </RollingRandomAccessFile>
     </Appenders>
@@ -38,7 +38,7 @@
         <!-- 控制台和日志文件中打印 Mybatis Sql, 日志等级高于 DEBUG 时不打印 Sql 日志-->
         <!-- level="DEBUG" 打印 Sql 影响条数-->
         <!-- level="TRACE" 打印 Sql 查询结果 -->
-        <AsyncLogger name="com.greatmicro.ates.ouya.biz.mapper" level="INFO" additivity="false">
+        <AsyncLogger name="com.greatmicro.ates.ouya.biz.mapper" level="DEBUG" additivity="false">
             <!-- 输出日志到控制台 -->
             <AppenderRef ref="Console"/>
             <!-- 输出日志到日志文件 -->
