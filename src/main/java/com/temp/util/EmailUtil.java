@@ -13,11 +13,13 @@ import org.apache.commons.lang3.StringUtils;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
+import javax.activation.URLDataSource;
 import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.*;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -215,9 +217,14 @@ public class EmailUtil {
                     .toList();
             for (MailInfoFileDTO mailFile : mailInfoFileList) {
                 MimeBodyPart attachment = new MimeBodyPart();
-                // 读取URL地址
-                //URL url = new URL(mailFile.getFileUrl());
-                DataSource dataSource = new FileDataSource(mailFile.getFileUrl());
+                DataSource dataSource;
+                if (mailFile.getFileUrl().startsWith("http")) {
+                    URL url = new URL(mailFile.getFileUrl());
+                    dataSource = new URLDataSource(url);
+                } else {
+                    // 读取URL地址
+                    dataSource = new FileDataSource(mailFile.getFileUrl());
+                }
                 DataHandler dh2 = new DataHandler(dataSource);
                 // 将附件数据添加到"节点"
                 attachment.setDataHandler(dh2);
