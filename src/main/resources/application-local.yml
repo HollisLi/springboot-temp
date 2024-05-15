@@ -1,8 +1,67 @@
-task:
-  cron:
-    # 每分钟执行一次
-    temp: 0 * * * * ?
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://58.246.191.134:30036/ates-ouya?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&useServerPrepStmts=false&rewriteBatchedStatements=true&useCompression=true
+    username: root
+    password: 7044ypaKxB2ujycO
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      # 初始连接数
+      initial-size: 1
+      # 最小连接数
+      min-idle: 1
+      # 最大连接数
+      max-active: 20
+      # 配置获取连接等待超时的时间，单位：毫秒
+      max-wait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位：毫秒
+      time-between-eviction-runs-millis: 60000
+      # 配置一个连接在池中最小生存的时间，单位：毫秒
+      min-evictable-idle-time-millis: 300000
+      # 配置一个连接在池中最大生存的时间，单位：毫秒
+      max-evictable-idle-time-millis: 900000
+      # 配置检测连接是否有效
+      validation-query: SELECT 1 FROM DUAL
+      # 指明连接是否被空闲连接回收器(如果有)进行检验.如果检测失败,则连接将被从池中去除
+      test-while-idle: true
+      # 指明是否在从池中取出连接前进行检验,如果检验失败, 则从池中去除连接并尝试取出另一个
+      test-on-borrow: false
+      # 是否在归还到池中前进行检验
+      test-on-return: false
+      # 配置监控统计
+      webStatFilter:
+        enabled: true
+      stat-view-servlet:
+        enabled: true
+        # 设置白名单，不填则允许所有访问
+        allow:
+        # 控制台管理用户名和密码
+        url-pattern: /druid/*
+        login-username: ates-ouya
+        login-password: 1qaz@WSX3eDC
+      filter:
+        stat:
+          enabled: true
+          # 记录慢SQL
+          log-slow-sql: true
+          slow-sql-millis: 100
+          merge-sql: true
+        wall:
+          config:
+            multi-statement-allow: true
+
+  # Redis 配置。Redisson 默认的配置足够使用，一般不需要进行调优
+  redis:
+    host: 58.246.191.134
+    port: 31774
+    database: 12
+    password: MAyibida
 
 ## 指定日志配置文件
 logging:
   config: classpath:log4j2-local.xml
+
+task:
+  cron:
+    # 每分钟执行一次
+    temp: 0 * * * * ?
