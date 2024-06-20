@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+import java.util.Objects;
+
 /**
  * Controller 返回值统一封装
  *
@@ -39,7 +41,7 @@ public class WrapResponseHandler implements ResponseBodyAdvice<Object> {
                                   @NotNull ServerHttpRequest request,
                                   @NotNull ServerHttpResponse response) {
         // String 类型会导致序列化错误
-        if (body instanceof String) {
+        if (Objects.isNull(body) || body instanceof String) {
             return JSONUtil.toJsonStr(Result.success(body));
         }
         return Result.success(body);
