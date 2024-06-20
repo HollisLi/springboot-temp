@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * @since 2024-01-03 18:58
  */
 @EnableScheduling
-@MapperScan("com.temp.mapper.**")
+@MapperScan("com.temp.biz.mapper.**")
 @SpringBootApplication(scanBasePackages = {"com.temp"})
 public class SpringBootTempApplication {
 
