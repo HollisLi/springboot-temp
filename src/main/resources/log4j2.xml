@@ -38,23 +38,23 @@
         <!-- 控制台和日志文件中打印 Mybatis Sql, 日志等级高于 DEBUG 时不打印 Sql 日志-->
         <!-- level="DEBUG" 打印 Sql 影响条数-->
         <!-- level="TRACE" 打印 Sql 查询结果 -->
-        <AsyncLogger name="com.greatmicro.ates.ouya.biz.mapper" level="INFO" additivity="false">
+        <Logger name="com.greatmicro.ates.ouya.biz.mapper" level="INFO" additivity="false">
             <!-- 输出日志到控制台 -->
             <AppenderRef ref="Console"/>
             <!-- 输出日志到日志文件 -->
             <AppenderRef ref="stdout"/>
-        </AsyncLogger>
+        </Logger>
 
-        <AsyncLogger name="org.springframework" level="ERROR" additivity="false">
+        <Logger name="org.springframework" level="ERROR" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="stdout"/>
-        </AsyncLogger>
+        </Logger>
 
         <!-- 全局配置 -->
-        <asyncRoot level="INFO" includeLocation="true">
+        <Root level="INFO" includeLocation="true">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="stdout"/>
-        </asyncRoot>
+        </Root>
     </Loggers>
 
 </Configuration>
