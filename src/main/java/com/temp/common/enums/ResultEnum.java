@@ -49,6 +49,11 @@ public enum ResultEnum {
     REQUEST_TIMEOUT(408, "请求超时"),
 
     /**
+     * 并发请求，禁止访问
+     */
+    LOCKED(423, "请求失败，请稍后重试"),
+
+    /**
      * 5xx（服务器错误状态码）：服务器在处理请求时发生了错误。
      */
     FAIL(500, "系统出现运行时异常，请稍后再试或联系管理员处理。"),
@@ -62,6 +67,8 @@ public enum ResultEnum {
     BAD_GATEWAY(502, "服务器作为网关或代理时，从上游服务器接收到无效的响应"),
     SERVICE_UNAVAILABLE(503, "服务器当前无法处理请求，可能是由于服务器维护或过载, 请稍后再试"),
     GATEWAY_TIMEOUT(504, "服务器作为网关或代理时，未能及时从上游服务器接收到请求"),
+
+    REPEATED_REQUESTS(900, "重复请求，请稍后重试"),
     ;
 
     public final Integer code;

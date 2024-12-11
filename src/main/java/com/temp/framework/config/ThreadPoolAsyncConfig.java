@@ -17,6 +17,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Configuration
 public class ThreadPoolAsyncConfig {
 
+    public static final String THREAD_POOL_TASK_EXECUTOR = "THREAD_POOL_TASK_EXECUTOR";
+
+
     /**
      * 可抛弃线程
      */
@@ -33,6 +36,26 @@ public class ThreadPoolAsyncConfig {
         // 初始化
         pool.initialize();
         return pool;
+    }
+
+    @Bean(THREAD_POOL_TASK_EXECUTOR)
+    public ThreadPoolTaskExecutor threadPoolTaskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        // 设置核心线程数
+        executor.setCorePoolSize(4);
+        // 设置最大线程数
+        executor.setMaxPoolSize(8);
+        // 设置空闲时间
+        executor.setKeepAliveSeconds(60);
+        // 设置队列大小
+        executor.setQueueCapacity(200);
+        // 配置线程池的前缀
+        executor.setThreadNamePrefix("thread-pool-task-");
+        // CALLER_RUNS：不在新线程中执行任务，而是有调用者所在的线程来执行
+        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        // 进行加载
+        executor.initialize();
+        return executor;
     }
 
     /**

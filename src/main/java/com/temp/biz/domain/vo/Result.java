@@ -36,16 +36,8 @@ public class Result<T> {
         return new Result<T>(ResultEnum.SUCCESS.code, ResultEnum.SUCCESS.message, data);
     }
 
-    public static <T> Result<T> success(String message, T data) {
-        return new Result<T>(ResultEnum.SUCCESS.code, message, data);
-    }
-
     public static <T> Result<T> fail(String message) {
         return new Result<>(ResultEnum.FAIL.code, message, null);
-    }
-
-    public static <T> Result<T> fail(T data) {
-        return new Result<>(ResultEnum.FAIL.code, ResultEnum.FAIL.message, data);
     }
 
     public static <T> Result<T> fail(Integer code, String message) {

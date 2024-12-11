@@ -60,22 +60,31 @@ public class LogAspect {
         }
 
         // 打印前端请求信息
-        log.info("""
-                        请求类型: {}
-                         请求地址: {}
-                         类名方法: {}#{}
-                         请求参数: {}""",
-                request.getMethod(), request.getRequestURI(),
-                signature.getDeclaringTypeName(), name,
-                JSONUtil.toJsonPrettyStr(arguments));
+        log.info("RequestId: {}, 请求路径: {} {}, 接口入参: {}, 实现方法: {}#{}, ",
+                request.getAttribute(TokenHolder.REQUEST_ID),
+                request.getMethod(),
+                request.getRequestURI(),
+                JSONUtil.toJsonStr(arguments),
+                signature.getDeclaringTypeName(),
+                name);
     }
 
     @Around("controllerPointcut()")
     public Object doAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+        // 开始打印请求日志
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes == null) {
+            log.error("LogAspect#doAround has error, requestAttributes is null");
+            return proceedingJoinPoint.proceed();
+        }
+
+        HttpServletRequest request = attributes.getRequest();
         long startTime = System.currentTimeMillis();
         Object result = proceedingJoinPoint.proceed();
-        log.info("返回结果: {}" +
-                "\n接口执行耗时：{} ms", JSONUtil.toJsonPrettyStr(result), System.currentTimeMillis() - startTime);
+        log.info("RequestId: {}, 接口响应: {}, 执行耗时：{} ms",
+                request.getAttribute(TokenHolder.REQUEST_ID),
+                JSONUtil.toJsonStr(result),
+                System.currentTimeMillis() - startTime);
         return result;
     }
 }

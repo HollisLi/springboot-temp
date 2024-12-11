@@ -62,5 +62,6 @@ public class BaseEntity {
      * 是否删除
      */
     @TableLogic
-    private Boolean deleted;
+    @TableField(value = "delete_flag")
+    private Boolean deleteFlag;
 }
