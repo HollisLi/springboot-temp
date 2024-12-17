@@ -19,7 +19,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-        <mapstruct.vsesion>1.5.5.Final</mapstruct.vsesion>
+        <mapstruct.vsesion>1.6.3</mapstruct.vsesion>
     </properties>
 
     <dependencies>
@@ -36,28 +36,16 @@
             </exclusions>
         </dependency>
 
-        <!-- Test 依赖 -->
+        <!--aop-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
-        <!-- Spring Security -->
+        <!-- spring boot 配置 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-
-        <!-- JWT -->
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>0.9.1</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.3.0</version>
+            <artifactId>spring-boot-configuration-processor</artifactId>
         </dependency>
 
         <!-- 参数校验 -->
@@ -66,25 +54,17 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
-        <!-- Mysql 驱动 -->
+        <!-- @PostConstruct 等注释支持 -->
         <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
-            <scope>runtime</scope>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>1.3.2</version>
         </dependency>
 
-        <!-- Druid 数据源驱动 -->
+        <!-- Test 依赖 -->
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
-            <version>1.2.21</version>
-        </dependency>
-
-        <!-- Mybatis Plus -->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
-            <version>3.5.5</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
 
         <!-- log4j2 日志框架 -->
@@ -100,16 +80,25 @@
             <version>3.4.4</version>
         </dependency>
 
-        <!--aop-->
+        <!-- Mysql 驱动 -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
-        <!-- ok http -->
+        <!-- Druid 数据源驱动 -->
         <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.2.24</version>
+        </dependency>
+
+        <!-- Mybatis Plus -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+            <version>3.5.9</version>
         </dependency>
 
         <!-- lombok -->
@@ -119,17 +108,27 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- @PostConstruct 等注释支持 -->
+        <!-- ok http -->
         <dependency>
-            <groupId>javax.annotation</groupId>
-            <artifactId>javax.annotation-api</artifactId>
-            <version>1.3.2</version>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
         </dependency>
-
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.15.1</version>
+        </dependency>
+
+        <!-- mapstruct -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.vsesion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>${mapstruct.vsesion}</version>
         </dependency>
 
         <!-- poi 依赖 -->
@@ -151,17 +150,11 @@
             <version>3.3.3</version>
         </dependency>
 
-        <!-- commons-lang3 工具包 -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-
         <!-- hutool 工具包 -->
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>5.8.27</version>
+            <version>5.8.34</version>
         </dependency>
 
         <!-- 邮件组件 -->
@@ -180,20 +173,7 @@
         <dependency>
             <groupId>com.aliyun.oss</groupId>
             <artifactId>aliyun-sdk-oss</artifactId>
-            <version>3.17.4</version>
-        </dependency>
-
-        <!-- Redis -->
-        <dependency>
-            <groupId>org.redisson</groupId>
-            <artifactId>redisson-spring-boot-starter</artifactId>
-            <version>3.18.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-actuator</artifactId>
-                </exclusion>
-            </exclusions>
+            <version>3.18.1</version>
         </dependency>
 
         <!-- 实现对 Caches 的自动化配置 -->
@@ -202,20 +182,29 @@
             <artifactId>spring-boot-starter-cache</artifactId>
         </dependency>
 
-        <!-- mapstruct -->
+        <!-- Sa-Token 权限认证，在线文档：https://sa-token.cc -->
         <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-            <version>${mapstruct.vsesion}</version>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-spring-boot3-starter</artifactId>
+            <version>1.39.0</version>
         </dependency>
+
+        <!-- Sa-Token 整合 Redis （使用 jackson 序列化方式） -->
         <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-processor</artifactId>
-            <version>${mapstruct.vsesion}</version>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-redis-jackson</artifactId>
+            <version>1.39.0</version>
+        </dependency>
+
+        <!-- 提供Redis连接池 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
         </dependency>
     </dependencies>
 
     <build>
+        <finalName>spingboot-temp</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
