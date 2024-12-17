@@ -1,7 +1,7 @@
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://47.116.204.187:58901/sa-token-redis?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&useServerPrepStmts=false&rewriteBatchedStatements=true&useCompression=true
+    url: jdbc:mysql://xxxx:58901/sa-token-redis?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&useServerPrepStmts=false&rewriteBatchedStatements=true&useCompression=true
     username: root
     password: Kjhyuiyf.2330
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -53,7 +53,7 @@ spring:
   # Redis 配置。Redisson 默认的配置足够使用，一般不需要进行调优
   data:
     redis:
-      host: 47.116.204.187
+      host: xxxx
       port: 16379
       database: 1
       # Redis服务器连接密码（默认为空）

@@ -50,15 +50,6 @@ spring:
           config:
             multi-statement-allow: true
 
-  # Redis 配置。Redisson 默认的配置足够使用，一般不需要进行调优
-  data:
-    redis:
-      host: 47.116.204.187
-      port: 16379
-      database: 0
-      # Redis服务器连接密码（默认为空）
-      # password:
-
 ## 指定日志配置文件
 logging:
   config: classpath:log4j2-prod.xml
