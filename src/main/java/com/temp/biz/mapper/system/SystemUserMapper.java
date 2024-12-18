@@ -11,4 +11,5 @@ import com.temp.biz.entity.system.SystemUser;
  */
 public interface SystemUserMapper extends BaseMapper<SystemUser> {
 
+    SystemUser getByUsername(String username);
 }

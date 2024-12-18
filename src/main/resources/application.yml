@@ -67,3 +67,8 @@ sa-token:
   token-style: uuid
   # 是否输出操作日志
   is-log: true
+
+######## 用户密码加密配置 ########
+secure:
+  # 加密盐值
+  key: jqlxxm2^%$bwl

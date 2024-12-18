@@ -1,5 +1,6 @@
 package com.temp.biz.controller.system;
 
+import cn.dev33.satoken.stp.SaTokenInfo;
 import com.temp.biz.domain.vo.system.auth.AuthPermissionInfoRespVO;
 import com.temp.biz.domain.vo.system.auth.ChangePasswordReqVO;
 import com.temp.biz.domain.vo.system.auth.LoginReqVO;
@@ -29,10 +30,10 @@ public class AuthController {
      * 登录
      *
      * @param loginReq 账号密码
-     * @return {@link String} Token
+     * @return {@link SaTokenInfo} Token 信息
      */
     @PostMapping("/login")
-    public String login(@RequestBody @Valid LoginReqVO loginReq) {
+    public SaTokenInfo login(@RequestBody @Valid LoginReqVO loginReq) {
         return authService.login(loginReq);
     }
 
