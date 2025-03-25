@@ -6,11 +6,10 @@ import lombok.AllArgsConstructor;
  * 公共响应码 Enum
  *
  * @author Hollis
- * @since 2023/08/15 19:49
+ * @since 2024-07-12 10:58
  */
 @AllArgsConstructor
 public enum ResultEnum {
-
     /**
      * 1xx（信息性状态码）：服务器已接收到请求，需要进一步处理.
      */
@@ -34,13 +33,15 @@ public enum ResultEnum {
     /**
      * 4xx（客户端错误状态码）：客户端发送的请求有错误。
      */
-    BAD_REQUEST(400, "参数校验不通过, 请提供正确的参数"),
+    BAD_REQUEST(400, "请求参数不正确, 请提供正确的参数"),
+    BAD_REQUEST_PARAM(400001, "请求参数校验不通过, 请提供正确的参数"),
 
-    UNAUTHORIZED(401, "请求需要携带鉴权信息"),
+    UNAUTHORIZED(401, "账号未登录"),
     UNAUTHORIZED_LOGIN_FAILURE(401001, "登录信息无效"),
+    UNAUTHORIZED_PASSWORD_FAILURE(401002, "用户名或密码错误"),
 
-    FORBIDDEN(403, "服务器拒绝请求"),
-    FORBIDDEN_INSUFFICIENT_PERMISSIONS(403001, "权限不足,请联系管理员授权"),
+    FORBIDDEN(403, "没有该操作权限"),
+    FORBIDDEN_INSUFFICIENT_PERMISSIONS(403001, "权限不足, 请联系管理员授权"),
 
     NOT_FOUND(404, "请求的资源不存在"),
     NOT_FOUND_MEMBER(404001, "用户不存在"),
@@ -49,20 +50,20 @@ public enum ResultEnum {
     REQUEST_TIMEOUT(408, "请求超时"),
 
     /**
-     * 并发请求，禁止访问
+     * 并发请求，不允许
      */
     LOCKED(423, "请求失败，请稍后重试"),
 
     /**
      * 5xx（服务器错误状态码）：服务器在处理请求时发生了错误。
      */
-    FAIL(500, "系统出现运行时异常，请稍后再试或联系管理员处理。"),
+    FAIL(500, "系统出现运行时异常，请稍后再试。"),
 
-    FAIL_NULL_POINTER(500101, "系统出现空指针异常，请稍后再试或联系管理员处理。"),
-    FAIL_ARRAY_INDEX_OUT_OF_BOUNDS(500102, "系统出现数组越界异常，请稍后再试或联系管理员处理。"),
-    FAIL_DATABASE(500103, "系统出现数据库异常，请稍后再试或联系管理员处理。"),
+    FAIL_NULL_POINTER(500101, "系统出现空指针异常，请稍后再试。"),
+    FAIL_ARRAY_INDEX_OUT_OF_BOUNDS(500102, "系统出现数组越界异常，请稍后再试。"),
+    FAIL_DATABASE(500103, "系统出现数据库异常，请稍后再试。"),
 
-    FAIL_BUSINESS(500200, "系统出现业务处理异常，请稍后再试或联系管理员处理。"),
+    FAIL_BUSINESS(500200, "系统出现业务处理异常，请稍后再试。"),
 
     BAD_GATEWAY(502, "服务器作为网关或代理时，从上游服务器接收到无效的响应"),
     SERVICE_UNAVAILABLE(503, "服务器当前无法处理请求，可能是由于服务器维护或过载, 请稍后再试"),

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.temp.biz.mapper.system.SystemUserRoleMapper">
+    <select id="listRoleCodeByUserId" resultType="java.lang.String">
+        select sr.code
+        from system_user_role sur
+                 left join system_role sr on sr.id = sur.role_id
+        where sur.delete_flag = 0
+          and sur.user_id = #{userId}
+    </select>
+
+    <delete id="deleteByUserId">
+        DELETE
+        FROM system_user_role
+        WHERE user_id = #{userId}
+    </delete>
+
+    <select id="listRoleIdByUserId" resultType="java.lang.Long">
+        select role_id
+        from system_user_role
+        where delete_flag = 0
+          and user_id = #{userId}
+    </select>
+
+    <select id="listRoleByUserId" resultType="com.temp.biz.entity.system.SystemRole">
+        select distinct sr.*
+        from system_user_role sur
+                 left join system_role sr on sr.id = sur.role_id
+        where sur.delete_flag = 0
+          and sr.delete_flag = 0
+          and sur.user_id = #{userId}
+    </select>
+</mapper>

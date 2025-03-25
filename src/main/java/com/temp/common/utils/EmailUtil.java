@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * 发送电子邮件工具类
@@ -214,7 +215,7 @@ public class EmailUtil {
         if (CollectionUtils.isNotEmpty(mailInfoFiles)) {
             List<MailInfoFileDTO> mailInfoFileList = mailInfoFiles.stream()
                     .filter(p -> StringUtils.isNotBlank(p.getFileUrl()))
-                    .toList();
+                    .collect(Collectors.toList());
             for (MailInfoFileDTO mailFile : mailInfoFileList) {
                 MimeBodyPart attachment = new MimeBodyPart();
                 DataSource dataSource;

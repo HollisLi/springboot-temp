@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -182,9 +183,9 @@ public class AliOssUtil {
      * @param s s
      * @return {@link String}
      */
-    private String encoder(String s) {
+    private String encoder(String s) throws UnsupportedEncodingException {
         return URLEncoder
-                .encode(s, StandardCharsets.UTF_8)
+                .encode(s, String.valueOf(StandardCharsets.UTF_8))
                 .replaceAll("\\+", "%20")
                 .replaceAll("\\*", "%2A");
     }

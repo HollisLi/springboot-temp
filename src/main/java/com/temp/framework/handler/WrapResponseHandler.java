@@ -25,7 +25,8 @@ import java.util.Objects;
 public class WrapResponseHandler implements ResponseBodyAdvice<Object> {
 
     @Override
-    public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
+    public boolean supports(MethodParameter returnType,
+                            @NotNull Class<? extends HttpMessageConverter<?>> converterType) {
         if (returnType.hasMethodAnnotation(ExceptionHandler.class)
                 || returnType.hasMethodAnnotation(NotWrapResponse.class)) {
             return false;
@@ -40,8 +41,10 @@ public class WrapResponseHandler implements ResponseBodyAdvice<Object> {
                                   @NotNull Class<? extends HttpMessageConverter<?>> selectedConverterType,
                                   @NotNull ServerHttpRequest request,
                                   @NotNull ServerHttpResponse response) {
-        // String 类型会导致序列化错误
-        if (Objects.isNull(body) || body instanceof String) {
+        if (Objects.isNull(body)) {
+            return Result.success();
+        }
+        if (body instanceof String) {
             return JSONUtil.toJsonStr(Result.success(body));
         }
         return Result.success(body);

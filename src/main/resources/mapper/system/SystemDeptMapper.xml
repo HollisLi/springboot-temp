@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.temp.biz.mapper.system.SystemDeptMapper">
+    <sql id="deptResVOBaseQuery">
+        select sd.id,
+               sd.name,
+               sd.enterprise_id,
+               se.enterprise_name,
+               sd.parent_id,
+               sd.sort,
+               sd.leader_user_id,
+               su.nickname as leader_user_name,
+               sd.phone,
+               sd.email,
+               sd.status,
+               sd.create_time
+        from system_dept sd
+                 left join system_enterprise se on se.id = sd.enterprise_id
+                 left join system_users su on su.id = sd.leader_user_id
+    </sql>
+
+    <select id="countByEnterpriseId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM system_dept
+        WHERE enterprise_id = #{enterpriseId}
+          AND delete_flag = 0
+    </select>
+
+    <select id="getByNameAndEnterpriseId" resultType="com.temp.biz.entity.system.SystemDept">
+        SELECT *
+        FROM system_dept
+        WHERE enterprise_id = #{enterpriseId}
+          AND name = #{name}
+          AND delete_flag = 0
+    </select>
+
+    <select id="countByParentId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM system_dept
+        WHERE parent_id = #{parentId}
+          AND delete_flag = 0
+    </select>
+
+    <select id="list" resultType="com.temp.biz.domain.vo.system.dept.DeptResVO">
+        <include refid="deptResVOBaseQuery"/>
+        where sd.delete_flag = 0
+          and se.delete_flag = 0
+        <if test="request.name != null and request.name != ''">
+            and sd.name like concat('%', #{request.name}, '%')
+        </if>
+        <if test="request.status != null">
+            and sd.status = #{request.status.value}
+        </if>
+        <if test="request.enterpriseId != null">
+            and sd.enterprise_id = #{request.enterpriseId}
+        </if>
+        order by sd.sort
+    </select>
+
+    <select id="getDetailById" resultType="com.temp.biz.domain.vo.system.dept.DeptResVO">
+        <include refid="deptResVOBaseQuery"/>
+        where sd.id = #{deptId}
+    </select>
+
+    <select id="listChildId" resultType="java.lang.Long">
+        select id
+        from system_dept sd
+        where delete_flag = 0
+          and status = 0
+          and parent_id in
+        <foreach collection="parentIds" item="parentId" open="(" close=")" separator=",">
+            #{parentId}
+        </foreach>
+    </select>
+</mapper>

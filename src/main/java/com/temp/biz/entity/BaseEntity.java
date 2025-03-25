@@ -46,12 +46,6 @@ public class BaseEntity {
     private Long updateUser;
 
     /**
-     * 修改人名称
-     */
-    @TableField(value = "update_user_name", fill = FieldFill.INSERT_UPDATE)
-    private String updateUserName;
-
-    /**
      * 修改时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

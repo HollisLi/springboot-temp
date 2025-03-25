@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.temp.biz.mapper.system.SystemUsersMapper">
+    <sql id="userResVOBaseQuery">
+        select su.id,
+               su.username,
+               su.nickname,
+               su.remark,
+               su.enterprise_id,
+               se.enterprise_name,
+               su.dept_id,
+               sd.name as deptName,
+               su.email,
+               su.mobile,
+               su.sex,
+               su.avatar,
+               su.status,
+               su.login_ip,
+               su.login_date,
+               su.create_time
+        from system_users su
+                 left join system_enterprise se on se.id = su.enterprise_id
+                 left join system_dept sd on sd.id = su.dept_id
+    </sql>
+
+    <select id="getByUsername" resultType="com.temp.biz.entity.system.SystemUsers">
+        select *
+        from system_users
+        where username = #{username}
+          and delete_flag = 0
+    </select>
+
+    <select id="getUserInfo" resultType="com.temp.biz.domain.vo.system.UserInfoResVO">
+        select su.id,
+               su.username,
+               su.nickname,
+               su.enterprise_id,
+               se.enterprise_name,
+               su.dept_id,
+               sd.name as dept_name,
+               su.email,
+               su.mobile,
+               su.sex,
+               su.avatar
+        from system_users su
+                 left join system_enterprise se on su.enterprise_id = se.id
+                 left join system_dept sd on su.dept_id = sd.id
+        where su.id = #{userId}
+          and se.delete_flag = 0
+          and sd.delete_flag = 0
+          and sd.status = 0
+    </select>
+
+    <select id="countByEnterpriseId" resultType="java.lang.Integer">
+        select count(*)
+        from system_users
+        where enterprise_id = #{enterpriseId}
+          and delete_flag = 0
+    </select>
+
+    <select id="countByDeptId" resultType="java.lang.Integer">
+        select count(*)
+        from system_users
+        where dept_id = #{deptId}
+          and delete_flag = 0
+    </select>
+
+    <select id="getByUsernameAndEnterpriseId" resultType="com.temp.biz.entity.system.SystemUsers">
+        select *
+        from system_users
+        where username = #{username}
+          and enterprise_id = #{enterpriseId}
+          and delete_flag = 0
+    </select>
+
+    <select id="page" resultType="com.temp.biz.domain.vo.system.user.UserResVO">
+        <include refid="userResVOBaseQuery"/>
+        where su.delete_flag = 0
+        <if test="pageReqVO.username != null and pageReqVO.username != ''">
+            and su.username like concat('%', #{pageReqVO.username}, '%')
+        </if>
+        <if test="pageReqVO.nickName != null and pageReqVO.nickName != ''">
+            and su.nickname like concat('%', #{pageReqVO.nickName}, '%')
+        </if>
+        <if test="pageReqVO.mobile != null and pageReqVO.mobile != ''">
+            and su.mobile like concat('%', #{pageReqVO.mobile}, '%')
+        </if>
+        <if test="pageReqVO.status != null">
+            and su.status = #{pageReqVO.status.value}
+        </if>
+        <if test="pageReqVO.enterpriseId != null">
+            and su.enterprise_id = #{pageReqVO.enterpriseId}
+        </if>
+        <if test="pageReqVO.deptChildIds != null">
+            and su.dept_id in
+            <foreach collection="pageReqVO.deptChildIds" item="deptId" open="(" close=")" separator=",">
+                #{deptId}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getDetailById" resultType="com.temp.biz.domain.vo.system.user.UserResVO">
+        <include refid="userResVOBaseQuery"/>
+        where su.id = #{userId}
+    </select>
+
+    <select id="getSimpleUserList" resultType="com.temp.biz.domain.vo.system.user.UserSimpleRespVO">
+        select su.id,
+               su.nickname,
+               su.dept_id,
+               sd.name as dept_name
+        from system_users su
+                 left join system_dept sd on sd.id = su.dept_id
+        where su.delete_flag = 0
+          and su.status = 0
+    </select>
+
+    <select id="pageOnline" resultType="com.temp.biz.domain.vo.system.online.OnlineResVO">
+        select su.id,
+               su.username,
+               su.nickname,
+               su.enterprise_id,
+               se.enterprise_name,
+               su.dept_id,
+               sd.name as dept_name,
+               login_ip,
+               login_date
+        from system_users su
+                 left join system_enterprise se on se.id = su.enterprise_id
+                 left join system_dept sd on sd.id = su.dept_id
+        where su.delete_flag = 0
+          and su.status = 0
+          and exists(select so2at.id
+                     from system_oauth2_access_token so2at
+                     where so2at.delete_flag = 0
+                       and so2at.user_id = su.id
+                       and so2at.expires_time > now())
+        <if test="req.username != null and req.username != ''">
+            and su.username like concat('%', #{req.username}, '%')
+        </if>
+        <if test="req.nickname != null and req.nickname != ''">
+            and su.nickname like concat('%', #{req.nickname}, '%')
+        </if>
+        <if test="req.enterpriseId != null">
+            and su.enterprise_id = #{req.enterpriseId}
+        </if>
+        <if test="req.deptId != null">
+            and su.dept_id = #{req.deptId}
+        </if>
+        <if test="req.loginDateStart != null">
+            and su.login_date >= #{req.loginDateStart}
+        </if>
+        <if test="req.loginDateEnd != null">
+            and su.login_date <![CDATA[<=]]> #{req.loginDateEnd}
+        </if>
+        order by su.login_date desc
+    </select>
+</mapper>

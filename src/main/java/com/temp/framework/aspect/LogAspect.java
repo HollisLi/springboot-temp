@@ -1,9 +1,7 @@
 package com.temp.framework.aspect;
 
 import cn.hutool.json.JSONUtil;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
-import jakarta.servlet.http.HttpServletRequest;
+import com.temp.framework.security.TokenHolder;
 import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -16,6 +14,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+
 
 /**
  * 日志切面, 打印接口入参和返回值
@@ -31,7 +34,7 @@ public class LogAspect {
     /**
      * 定义一个切点, 只看Controller包下的类
      */
-    @Pointcut("execution(public * com.temp.controller..*Controller.*(..))")
+    @Pointcut("execution(public * com.temp.biz.controller..*Controller.*(..))")
     public void controllerPointcut() {
     }
 
@@ -40,7 +43,7 @@ public class LogAspect {
         // 开始打印请求日志
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (attributes == null) {
-            log.error("logAspect#doBefore has error, requestAttributes is null");
+            log.error("LogAspect#doBefore has error, requestAttributes is null");
             return;
         }
 

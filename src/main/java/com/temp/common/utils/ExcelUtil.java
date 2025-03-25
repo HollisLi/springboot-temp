@@ -6,19 +6,21 @@ import com.alibaba.excel.exception.ExcelCommonException;
 import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.excel.write.metadata.style.WriteCellStyle;
 import com.alibaba.excel.write.style.HorizontalCellStyleStrategy;
+import com.temp.framework.exception.BusinessException;
 import com.temp.framework.handler.CustomCellWriteHandler;
-import jakarta.servlet.ServletOutputStream;
 import lombok.extern.log4j.Log4j2;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.formula.eval.ErrorEval;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFFormulaEvaluator;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.BaseXSSFFormulaEvaluator;
 import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import javax.servlet.ServletOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -128,6 +130,7 @@ public class ExcelUtil {
                     .doWrite(data);
         } catch (Exception ex) {
             log.error("写入Excel出错", ex);
+            throw new BusinessException("写入Excel出错");
         }
     }
 
@@ -150,14 +153,14 @@ public class ExcelUtil {
             HorizontalCellStyleStrategy horizontalCellStyleStrategy = new HorizontalCellStyleStrategy(headWriteCellStyle, contentWriteCellStyle);
 
             // 写入excel
-            EasyExcel
-                    .write(outputStream, dataClass)
+            EasyExcel.write(outputStream, dataClass)
                     .sheet(sheetName)
                     .registerWriteHandler(horizontalCellStyleStrategy)
                     .registerWriteHandler(new CustomCellWriteHandler())
                     .doWrite(data);
         } catch (Exception ex) {
             log.error("导出Excel出错", ex);
+            throw new BusinessException("导出Excel出错");
         }
     }
 
@@ -194,6 +197,7 @@ public class ExcelUtil {
                     .doWrite(data);
         } catch (Exception ex) {
             log.error("导出Excel出错", ex);
+            throw new BusinessException("导出Excel出错");
         }
     }
 
@@ -218,84 +222,11 @@ public class ExcelUtil {
                 if (row != null) {
                     Cell cell = row.getCell(column);
                     if (cell != null) {
-                        cell.setCellType(CellType.STRING);
                         return cell.getStringCellValue();
                     }
                 }
             }
             return null;
-        } catch (Exception ex) {
-            log.error("读取excel出错, errorMessage = {}", ex.getMessage());
-            return null;
-        }
-    }
-
-
-    /**
-     * 读取 Excel 指定 Sheet 中指定行列坐标的值
-     *
-     * @param fileName   解析文件名
-     * @param sheetIndex sheet下标
-     * @param line       行号
-     * @param column     列号
-     * @return java.lang.String Excel指定Sheet的指定坐标值
-     * @author Hollis
-     */
-    public static String getData(String fileName, int sheetIndex, int line, int column) {
-        try {
-            FileInputStream fileInputStream = new FileInputStream(fileName);
-            Workbook workbook = getWorkbook(fileInputStream, fileName);
-            Sheet sheet = workbook.getSheetAt(sheetIndex);
-            if (sheet == null) {
-                log.error("读取excel出错, sheet is null, fileName: {}, sheetIndex: {}", fileName, sheetIndex);
-                return null;
-            }
-
-            Row row = sheet.getRow(line);
-            if (null == row) {
-                log.error("读取excel出错, row is null, fileName: {}, sheetIndex: {}, row: {}",
-                        fileName, sheetIndex, line);
-                return null;
-            }
-
-            Cell cell = row.getCell(column);
-            if (cell == null) {
-                log.error("读取excel出错, column is null, fileName: {}, sheetIndex: {}, row: {}, column: {}",
-                        fileName, sheetIndex, line, column);
-                return null;
-            }
-
-            switch (cell.getCellType()) {
-                case NUMERIC -> {
-                    return String.valueOf(cell.getNumericCellValue());
-                }
-                case STRING -> {
-                    return cell.getStringCellValue();
-                }
-                case FORMULA -> {
-                    String cellFormula = cell.getCellFormula();
-                    if (StringUtils.isBlank(cellFormula)) {
-                        return StringUtils.EMPTY;
-                    }
-                    return getFormulaEvaluator(workbook, fileName)
-                            .evaluate(cell)
-                            .formatAsString();
-                }
-                case BLANK -> {
-                    return StringUtils.EMPTY;
-                }
-                case BOOLEAN -> {
-                    return cell.getBooleanCellValue() ? "TRUE" : "FALSE";
-                }
-                case ERROR -> {
-                    return ErrorEval.getText(cell.getErrorCellValue());
-                }
-                default -> {
-                    log.error("读取excel出错, 未知 Cell 类型: {}", cell.getCellType());
-                    return null;
-                }
-            }
-
         } catch (Exception ex) {
             log.error("读取excel出错, errorMessage = {}", ex.getMessage());
             return null;

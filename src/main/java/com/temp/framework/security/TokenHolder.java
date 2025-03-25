@@ -1,6 +1,11 @@
 package com.temp.framework.security;
 
-import org.springframework.security.core.context.SecurityContextHolder;
+import cn.dev33.satoken.stp.StpUtil;
+import com.temp.biz.domain.dto.system.auth.UserInfoDTO;
+import com.temp.biz.entity.system.SystemUsers;
+import com.temp.common.constants.SessionKeyConstant;
+
+import java.util.Set;
 
 /**
  * 获取 Token 中的用户信息
@@ -10,87 +15,135 @@ import org.springframework.security.core.context.SecurityContextHolder;
  */
 public class TokenHolder {
 
+    public static final String REQUEST_ID = "RequestId";
+
     /**
-     * 获取 租户 Id
+     * 获取 用户ID
      *
      * @return {@link String}
      */
-    public static Long getTenantId() {
-        return getUserDetail().getTenantId();
+    public static Long getUserId() {
+        return getLoginUser().getUser().getId();
     }
 
     /**
-     * 获取 租户 Id
+     * 获取 登录账号
      *
      * @return {@link String}
      */
-    public static String getTenantName() {
-        return getUserDetail().getTenantName();
+    public static String getUsername() {
+        return getLoginUser().getUser().getUsername();
     }
 
     /**
-     * 获取 会员 企业Id
+     * 获取 用户名称
      *
      * @return {@link String}
      */
-    public static Long getEnterPriseId() {
-        return getUserDetail().getEnterpriseId();
+    public static String getNickName() {
+        return getLoginUser().getUser().getNickname();
     }
 
     /**
-     * 获取 会员 企业名称
+     * 获取 用户 邮箱
      *
      * @return {@link String}
      */
-    public static String getEnterPriseName() {
-        return getUserDetail().getEnterpriseName();
+    public static String getEmail() {
+        return getLoginUser().getUser().getEmail();
     }
 
     /**
-     * 获取 会员 Id
-     *
-     * @return {@link String}
-     */
-    public static Long getMemberId() {
-        return getUserDetail().getMemberId();
-    }
-
-    /**
-     * 获取 会员 Code
-     *
-     * @return {@link String}
-     */
-    public static String getMemberCode() {
-        return getUserDetail().getMemberCode();
-    }
-
-    /**
-     * 获取 会员 名称
-     *
-     * @return {@link String}
-     */
-    public static String getMemberName() {
-        return getUserDetail().getMemberName();
-    }
-
-    /**
-     * 获取 会员 手机号
+     * 获取 用户 手机号
      * e.g: 13000000001
      *
      * @return {@link String}
      */
-    public static String getMobilePhone() {
-        return getUserDetail().getMemberMobilePhone();
+    public static String getMobile() {
+        return getLoginUser().getUser().getMobile();
+    }
+
+    /**
+     * 获取 用户企业ID
+     *
+     * @return {@link String}
+     */
+    public static Long getEnterpriseId() {
+        return getLoginUser().getUser().getEnterpriseId();
+    }
+
+    /**
+     * 获取 用户部门ID
+     *
+     * @return {@link String}
+     */
+    public static Long getDeptId() {
+        return getLoginUser().getUser().getDeptId();
+    }
+
+    /**
+     * 获取 用户角色列表
+     *
+     * @return {@link String}
+     */
+    public static Set<String> getRoles() {
+        return getLoginUser().getRoles();
+    }
+
+    /**
+     * 获取 用户岗位列表
+     *
+     * @return {@link String}
+     */
+    public static Set<String> getPosts() {
+        return getLoginUser().getPosts();
+    }
+
+    /**
+     * 获取 用户操作权限列表
+     *
+     * @return {@link String}
+     */
+    public static Set<String> getPermissions() {
+        return getLoginUser().getPermissions();
     }
 
     /**
      * 获取用户详细信息
      */
-    public static UserDetail getUserDetail() {
-        return (UserDetail) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
+    public static UserInfoDTO getLoginUser() {
+        UserInfoDTO userInfo = (UserInfoDTO) StpUtil.getSession().get(SessionKeyConstant.USER_INFO);
+        return userInfo == null ? buildUserInfo() : userInfo;
+    }
 
+    private static UserInfoDTO buildUserInfo() {
+        SystemUsers user = new SystemUsers();
+        user.setId(0L);
+        user.setUsername("System");
+        //user.setPassword();
+        user.setNickname("System");
+        //user.setRemark();
+        user.setEnterpriseId(0L);
+        user.setDeptId(0L);
+        //user.setEmail();
+        //user.setMobile();
+        //user.setSex();
+        //user.setAvatar();
+        //user.setStatus();
+        //user.setLoginIp();
+        //user.setLoginDate();
+        //user.setCreateUser();
+        //user.setCreateUserName();
+        //user.setCreateTime();
+        //user.setUpdateUser();
+        //user.setUpdateTime();
+        //user.setDeleteFlag();
+
+        UserInfoDTO userInfo = new UserInfoDTO();
+        userInfo.setUser(user);
+        userInfo.setRoles(null);
+        userInfo.setPosts(null);
+        userInfo.setPermissions(null);
+        return userInfo;
     }
 }

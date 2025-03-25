@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.temp.biz.mapper.system.SystemDictDataMapper">
+    <select id="listByDictType" resultType="com.temp.biz.domain.vo.system.dict.DictDataResVO">
+        select id,
+               label,
+               value
+        from system_dict_data
+        where dict_type = #{dictType}
+          and delete_flag = 0
+          and status = 0
+        order by sort, create_time
+    </select>
+
+    <select id="listSimple" resultType="com.temp.biz.domain.vo.system.dict.DictDataSimpleRespVO">
+        select dict_type,
+               value,
+               label,
+               color_type,
+               css_class
+        from system_dict_data
+        where delete_flag = 0
+    </select>
+</mapper>

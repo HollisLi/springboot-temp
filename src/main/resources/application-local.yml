@@ -51,11 +51,17 @@ spring:
             multi-statement-allow: true
 
   # Redis 配置。Redisson 默认的配置足够使用，一般不需要进行调优
-  redis:
-    host: 58.246.191.134
-    port: 31774
-    database: 12
-    password: MAyibida
+  data:
+    redis:
+      host: 58.246.191.134
+      port: 31774
+      database: 12
+      password: MAyibida
+
+############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
+sa-token:
+  # 是否输出操作日志
+  is-log: true
 
 ## 指定日志配置文件
 logging:

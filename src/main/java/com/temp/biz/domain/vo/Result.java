@@ -3,6 +3,8 @@ package com.temp.biz.domain.vo;
 import com.temp.common.enums.ResultEnum;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * 公共响应
  *
@@ -10,12 +12,14 @@ import lombok.Data;
  * @since 2024-01-06 15:02
  */
 @Data
-public class Result<T> {
+public class Result<T> implements Serializable {
+
+    private static final long serialVersionUID = 7520341178274901974L;
 
     /**
      * 公共响应 - 状态码
      */
-    private Integer status;
+    private Integer code;
 
     /**
      * 公共响应 - 消息
@@ -56,8 +60,8 @@ public class Result<T> {
         return new Result<>(resultEnum.code, resultEnum.message, data);
     }
 
-    public Result(Integer status, String message, T data) {
-        this.status = status;
+    public Result(Integer code, String message, T data) {
+        this.code = code;
         this.message = message;
         this.data = data;
     }
